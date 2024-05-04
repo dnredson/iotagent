@@ -192,11 +192,7 @@ def main():
                                     active_plugins.add(service_name)
                                     subprocess.Popen(['python3', 'plugins/dockerRestPlugin.py', service_name, service_address, str(service_port), service_path, service, broker_address, entity_id, str(sample_interval),healthcheck])
                             if plugin_info == 'systemPlugin':
-                              
                                 service_name = component['serviceName']
-                           
-                           
-                           
                                 broker_address = component['brokerAddress']
                                 entity_id = component['entityid']
                                 sample_interval = component['sampleInterval']
@@ -206,7 +202,17 @@ def main():
                                     
                                     active_plugins.add(service_name)
                                     subprocess.Popen(['python3', 'plugins/systemPlugin.py', str(sample_interval),  entity_id, broker_address])
-                                           
+                            if plugin_info == 'systemPluginAWS':
+                                service_name = component['serviceName']
+                                broker_address = component['brokerAddress']
+                                entity_id = component['entityid']
+                                sample_interval = component['sampleInterval']
+                           
+                                print("Starting System metric plugin")
+                                if service_name not in active_plugins:
+                                    
+                                    active_plugins.add(service_name)
+                                    subprocess.Popen(['python3', 'plugins/systemPluginAWS.py', str(sample_interval),  entity_id, broker_address])               
                             else:
                                 print("Plugin não encontrado: ",plugin_info)
                 else:
