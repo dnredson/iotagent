@@ -94,7 +94,7 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
         }
 
         try:
-            response = requests.post(f"{endereco_orion}/v2/entities?options=upsert", data=json.dumps(data), headers=headers)
+            response = requests.post(f"{endereco_orion}?options=upsert", data=json.dumps(data), headers=headers)
             print(f"Dados enviados com sucesso: {response.status_code}")
         except requests.exceptions.RequestException as e:
             print(f"Erro ao postar para o Fiware-Orion: {e}")
