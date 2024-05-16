@@ -1,0 +1,93 @@
+{
+    "id": "MQTT2",
+    "type": "Service",
+    "acao": {
+      "type": "boolean",
+      "value": "false",
+      "metadata": {}
+    },
+    "categoria": {
+      "type": "Text",
+      "value": "software",
+      "metadata": {}
+    },
+    "command": {
+      "type": "Text",
+      "value": "terraform apply",
+      "metadata": {}
+    },
+    "deployInfo": {
+      "type": "TextUnrestricted",
+      "value": [
+        {
+          "serviceName": "mqtt",      
+          "action": true,
+          "serviceAddress": "localhost",
+          "brokerAddress": "http://192.168.10.105:1026/v2/entities",
+          "servicePort": 1883,
+          "service": "openiot",
+          "entityId": " ",
+          "parentInfra": "",
+          "servicepath": "/",
+          "actionType": "deploy",
+          "status": "deploying",
+          "sampleInterval": "30",
+          "pluginName": "mqttPlugin",
+          "processtype": "docker",
+          "processname": "mqtt",
+          
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "eclipse-mosquitto",
+                "preInstallCommands": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "echo%20%22listener%201883%200.0.0.0%5Cnallow_anonymous%20true%22%20%3E%20mosquitto.conf"
+                  }
+                ],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-d%20--name%20serviceName%20-p%201883%3AservicePort%20-v%20.%2Fmosquitto.conf%3A%2Fmosquitto%2Fconfig%2Fmosquitto.conf%20dockerImage"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {}
+    },
+    "deployType": {
+      "type": "Text",
+      "value": "standalone",
+      "metadata": {}
+    },
+    "description": {
+      "type": "Text",
+      "value": "MQTT",
+      "metadata": {}
+    },
+    "endpoint": {
+      "type": "Text",
+      "value": "http://192.168.10.105:1026/v2",
+      "metadata": {}
+    },
+    "local": {
+      "type": "Text",
+      "value": "localhost",
+      "metadata": {}
+    },
+    "parentInfra": {
+      "type": "Text",
+      "value": " ",
+      "metadata": {}
+    },
+    "serviceName": {
+      "type": "Text",
+      "value": "MQTT Broker",
+      "metadata": {}
+    }
+  }

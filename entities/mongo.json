@@ -1,0 +1,77 @@
+{
+    "id": "MongoDB",
+    "type": "Service",
+    "acao": {
+      "type": "boolean",
+      "value": "false",
+      "metadata": {}
+    },
+    "categoria": {
+      "type": "Text",
+      "value": "software",
+      "metadata": {}
+    },
+    "command": {
+      "type": "Text",
+      "value": "terraform apply",
+      "metadata": {}
+    },
+    "deployInfo": {
+      "type": "TextUnrestricted",
+      "value": [
+        {
+          "serviceName": "mongodb",
+          "serviceAddress": "localhost",
+          "brokerAddress": "http://192.168.10.105:1026/v2/entities",
+          "servicePort": 1883,
+          "service": "openiot",
+          "entityId": " ",
+          "parentInfra": "",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "dockerMongoPlugin",
+          "processtype": "docker",
+          "processname": "mongodb",
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "mongo:4.4",
+                "preInstallCommands": [],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-itd%20--name%20%20mongodb%20%20-p%2027017%3A27017%20-d%20mongo%3A4.4"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {}
+    },
+    "description": {
+      "type": "Text",
+      "value": "Fiware-Orion",
+      "metadata": {}
+    },
+    "endpoint": {
+      "type": "Text",
+      "value": "http://192.168.10.105:1026/v2",
+      "metadata": {}
+    },
+    "local": {
+      "type": "Text",
+      "value": "localhost",
+      "metadata": {}
+    },
+    "serviceName": {
+      "type": "Text",
+      "value": "MongoDB stand alone",
+      "metadata": {}
+    }
+  }

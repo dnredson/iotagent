@@ -5,11 +5,15 @@ import requests
 import docker
 import threading
 import paho.mqtt.client as mqtt
-if len(sys.argv) != 9:
+
+print("Iniciando monitoramento mqtt")
+
+if len(sys.argv) != 10:
     print("Número incorreto de argumentos fornecidos.")
     sys.exit(1)
 
-service_name, service_address, service_port, service_path, service, broker_address, entity_id, sample_interval = sys.argv[1:]
+service_name, service_address, service_port, service_path, service, broker_address, entity_id, sample_interval,parent_infra = sys.argv[1:]
+print(service_name, service_address, service_port, service_path, service, broker_address, entity_id, sample_interval,parent_infra)
 service_port = int(service_port)
 sample_interval = int(sample_interval)
 print("Starting Monitoring Service for "+str(service_name)+" every "+str(sample_interval)+" seconds")
@@ -90,7 +94,11 @@ def create_or_update_entity(cpu_percent, memory_percent,availability):
         "cpu": {"type": "Number", "value": round(cpu_percent, 2)},
         "memory": {"type": "Number", "value": round(memory_percent, 2)},
         "availability": {"type": "boolean", "value": availability},
+        "parentInfra": {"type": "Number", "value": parent_infra},
         "timestamp": {"type": "Number", "value": int(timestamp)}
+        
+
+        
     }
     
     headers = {

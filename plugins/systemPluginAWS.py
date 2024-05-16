@@ -24,7 +24,7 @@ def get_external_ip_address():
     except requests.RequestException:
         return "Unavailable"
 
-def monitorar_sistema(tempo, nome_entidade, endereco_orion):
+def monitorar_sistema(tempo, nome_entidade, endereco_orion,children):
     print(f"Monitorando as métricas do sistema...")
 
     while True:
@@ -53,7 +53,7 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
                 "type": "Text",
                 "value": internal_ip_address
             },
-            "external_ip_address": {
+            "ip_address": {
                 "type": "Text",
                 "value": external_ip_address
             },
@@ -84,7 +84,16 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
             "disk_max": {
                 "type": "Number",
                 "value": round(disk_max_mb, 2)
-            }
+            },
+             "availability": {
+                "type": "Boolean",
+                "value": True
+            },
+            "timestamp":{
+                "type": "Boolean",
+                "value": int(time.time() * 1000)
+            },
+             "children":{ "type": "StructuredValue", "value":children}
         }
 
         headers = {
@@ -102,12 +111,13 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
         time.sleep(tempo)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Uso: python codigo.py tempo nome_entidade endereco_orion")
         sys.exit(1)
 
     tempo = int(sys.argv[1])
     nome_entidade = sys.argv[2]
     endereco_orion = sys.argv[3]
+    children = sys.argv[4]
 
-    monitorar_sistema(tempo, nome_entidade, endereco_orion)
+    monitorar_sistema(tempo, nome_entidade, endereco_orion,children)

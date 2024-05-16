@@ -4,7 +4,7 @@ import requests
 import psutil
 import socket
 import sys
-
+import time
 
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -18,10 +18,12 @@ def get_ip_address():
     return IP
 
 
-def monitorar_sistema(tempo, nome_entidade, endereco_orion):
+def monitorar_sistema(tempo, nome_entidade, endereco_orion,children):
     print(f"Monitorando as métricas do sistema...")
+    
 
     while True:
+        
         # Coletar métricas do sistema
         cpu_percent = psutil.cpu_percent()
         memory = psutil.virtual_memory()
@@ -73,7 +75,18 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
             "disk_max": {
                 "type": "Number",
                 "value": round(disk_max_mb, 2)
-            }
+            },
+             "availability": {
+                "type": "Boolean",
+                "value": True
+            },
+            "timestamp":{
+                "type": "Boolean",
+                "value": int(time.time() * 1000)
+            },
+            "children":{ 
+                "type": "Text", 
+                "value":children}
         }
 
         headers = {
@@ -81,7 +94,8 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
             'Fiware-Service': 'openiot',
             'Fiware-ServicePath': '/'
         }
-
+        
+        
         try:
             response = requests.post(f"{endereco_orion}?options=upsert", data=json.dumps(data), headers=headers)
             print(f"Dados enviados com sucesso: {response.status_code}")
@@ -92,12 +106,15 @@ def monitorar_sistema(tempo, nome_entidade, endereco_orion):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Uso: python codigo.py tempo nome_entidade endereco_orion")
+    
+    
+    if len(sys.argv) != 5:
+        print("Uso: python codigo.py tempo nome_entidade endereco_orion children")
         sys.exit(1)
-
+    
     tempo = int(sys.argv[1])
     nome_entidade = sys.argv[2]
     endereco_orion = sys.argv[3]
-
-    monitorar_sistema(tempo, nome_entidade, endereco_orion)
+    children = sys.argv[4]
+    
+    monitorar_sistema(tempo, nome_entidade, endereco_orion,children)

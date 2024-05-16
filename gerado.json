@@ -1,0 +1,752 @@
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "fog2",
+          "type": "L1-Infrastructure",
+          "serviceName": "Fog VM",
+          "serviceId": "urn:ngsi-ld:Fog",
+          "categories": {}
+        },
+        "position": {
+          "x": 490.82544378698225,
+          "y": 289.56508875739644
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": "L1Infrastructure"
+      },
+      {
+        "data": {
+          "id": "fog2:MongoDB",
+          "type": "Software",
+          "acao": {
+            "type": "boolean",
+            "value": "false",
+            "metadata": {}
+          },
+          "categoria": {
+            "type": "Text",
+            "value": "software",
+            "metadata": {}
+          },
+          "command": {
+            "type": "Text",
+            "value": "terraform apply",
+            "metadata": {}
+          },
+          "deployInfo": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "serviceName": "mongodb",
+                "serviceAddress": "localhost",
+                "brokerAddress": "http://192.168.10.105:1026/v2/entities",
+                "servicePort": 1883,
+                "service": "openiot",
+                "entityId": " ",
+                "parentInfra": "fog2",
+                "servicepath": "/",
+                "sampleInterval": "30",
+                "pluginName": "dockerMongoPlugin",
+                "processtype": "docker",
+                "processname": "mongodb",
+                "action": true,
+                "actionType": "deploy",
+                "status": "deploying",
+                "processMetadata": {
+                  "type": "StructuredValue",
+                  "value": [
+                    {
+                      "dockerImage": "mongo:4.4",
+                      "preInstallCommands": [],
+                      "command": [
+                        {
+                          "type": "TextUnrestricted",
+                          "value": "docker%20run%20-itd%20--name%20%20mongodb%20%20-p%2027017%3A27017%20-d%20mongo%3A4.4"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "dependencies": {
+                  "type": "TextUnrestricted",
+                  "value": [
+                    {
+                      "dependsOn": "fog2",
+                      "address": "fog2",
+                      "fieldOfInterest": "availability",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": true,
+                      "operational": true
+                    }
+                  ],
+                  "metadata": {}
+                }
+              }
+            ],
+            "metadata": {}
+          },
+          "description": {
+            "type": "Text",
+            "value": "Fiware-Orion",
+            "metadata": {}
+          },
+          "endpoint": {
+            "type": "Text",
+            "value": "http://192.168.10.105:1026/v2",
+            "metadata": {}
+          },
+          "local": {
+            "type": "Text",
+            "value": "localhost",
+            "metadata": {}
+          },
+          "serviceName": {
+            "type": "Text",
+            "value": "MongoDB stand alone",
+            "metadata": {}
+          },
+          "label": "fog2:MongoDB",
+          "parentInfra": "fog2"
+        },
+        "position": {
+          "x": 510.36390532544374,
+          "y": 216.63313609467457
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": ""
+      },
+      {
+        "data": {
+          "id": "fog2:Orion2",
+          "type": "Software",
+          "acao": {
+            "type": "boolean",
+            "value": "false",
+            "metadata": {}
+          },
+          "categoria": {
+            "type": "Text",
+            "value": "software",
+            "metadata": {}
+          },
+          "command": {
+            "type": "Text",
+            "value": "terraform apply",
+            "metadata": {}
+          },
+          "deployInfo": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependencies": {
+                  "type": "TextUnrestricted",
+                  "value": [
+                    {
+                      "dependsOn": "MongoDB",
+                      "address": "fog2:MongoDB",
+                      "fieldOfInterest": "availability",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": true,
+                      "operational": false
+                    },
+                    {
+                      "dependsOn": "MongoDB",
+                      "address": "fog2:MongoDB",
+                      "fieldOfInterest": "ip_address",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": " ",
+                      "operational": false
+                    },
+                    {
+                      "dependsOn": "fog2",
+                      "address": "fog2",
+                      "fieldOfInterest": "availability",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": true,
+                      "operational": true
+                    }
+                  ],
+                  "metadata": {}
+                },
+                "dependenciesDetails": {
+                  "type": "Text",
+                  "value": "MongoDB",
+                  "metadata": {}
+                },
+                "parentInfra": "fog2",
+                "action": true,
+                "actionType": "deploy",
+                "status": "deploying",
+                "serviceName": "orion",
+                "serviceAddress": "localhost",
+                "servicePort": 1026,
+                "brokerAddress": "http://192.168.10.105:1026/v2/entities",
+                "service": "openiot",
+                "servicepath": "/",
+                "sampleInterval": "30",
+                "pluginName": "dockerRestPlugin",
+                "processtype": "docker",
+                "processname": "orion",
+                "entityId": " ",
+                "processMetadata": {
+                  "type": "StructuredValue",
+                  "value": [
+                    {
+                      "dockerImage": "fiware/orion-ld",
+                      "healthCheck": "http://localhost:1026/version",
+                      "preInstallCommands": [],
+                      "command": [
+                        {
+                          "type": "TextUnrestricted",
+                          "value": "docker%20run%20-itd%20--name%20serviceName%20-p%201026%3AservicePort%20dockerImage%20--dbhost%20MongoDB%20"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "metadata": {}
+          },
+          "deployType": {
+            "type": "Text",
+            "value": "standalone",
+            "metadata": {}
+          },
+          "description": {
+            "type": "Text",
+            "value": "Fiware-Orion",
+            "metadata": {}
+          },
+          "endpoint": {
+            "type": "Text",
+            "value": "http://192.168.10.105:1026/v2",
+            "metadata": {}
+          },
+          "local": {
+            "type": "Text",
+            "value": "localhost",
+            "metadata": {}
+          },
+          "serviceName": {
+            "type": "Text",
+            "value": "Fiware-Orion stand alone",
+            "metadata": {}
+          },
+          "label": "fog2:Orion2",
+          "parentInfra": "fog2"
+        },
+        "position": {
+          "x": 431.15384615384613,
+          "y": 218.9378698224852
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": ""
+      },
+      {
+        "data": {
+          "id": "fog3",
+          "type": "L1-Infrastructure",
+          "serviceName": "Fog VM",
+          "serviceId": "urn:ngsi-ld:Fog",
+          "categories": {}
+        },
+        "position": {
+          "x": 282.72781065088765,
+          "y": 291.1331360946745
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": "L1Infrastructure"
+      },
+      {
+        "data": {
+          "id": "fog3:MQTT",
+          "type": "Software",
+          "acao": {
+            "type": "boolean",
+            "value": "false",
+            "metadata": {}
+          },
+          "categoria": {
+            "type": "Text",
+            "value": "software",
+            "metadata": {}
+          },
+          "command": {
+            "type": "Text",
+            "value": "terraform apply",
+            "metadata": {}
+          },
+          "deployInfo": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "action": true,
+                "actionType": "deploy",
+                "status": "deploying",
+                "serviceName": "mqtt",
+                "pluginName": "mqttPlugin",
+                "processtype": "docker",
+                "processname": "mqtt",
+                "processMetadata": {
+                  "type": "StructuredValue",
+                  "value": [
+                    {
+                      "dockerImage": "eclipse-mosquitto",
+                      "preInstallCommands": [
+                        {
+                          "type": "TextUnrestricted",
+                          "value": "echo%20%22listener%201883%200.0.0.0%5Cnallow_anonymous%20true%22%20%3E%20mosquitto.conf"
+                        }
+                      ],
+                      "command": [
+                        {
+                          "type": "TextUnrestricted",
+                          "value": "docker%20run%20-d%20--name%20serviceName%20-p%201883%3AservicePort%20-v%20.%2Fmosquitto.conf%3A%2Fmosquitto%2Fconfig%2Fmosquitto.conf%20dockerImage"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "dependencies": {
+                  "type": "TextUnrestricted",
+                  "value": [
+                    {
+                      "dependsOn": "fog3",
+                      "address": "fog3",
+                      "fieldOfInterest": "availability",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": true,
+                      "operational": true
+                    }
+                  ],
+                  "metadata": {}
+                },
+                "parentInfra": "fog3"
+              }
+            ],
+            "metadata": {}
+          },
+          "deployType": {
+            "type": "Text",
+            "value": "standalone",
+            "metadata": {}
+          },
+          "description": {
+            "type": "Text",
+            "value": "MQTT",
+            "metadata": {}
+          },
+          "endpoint": {
+            "type": "Text",
+            "value": "http://192.168.10.105:1026/v2",
+            "metadata": {}
+          },
+          "local": {
+            "type": "Text",
+            "value": "localhost",
+            "metadata": {}
+          },
+          "serviceName": {
+            "type": "Text",
+            "value": "MQTT Broker",
+            "metadata": {}
+          },
+          "label": "fog3:MQTT",
+          "parentInfra": "fog3"
+        },
+        "position": {
+          "x": 214.95266272189355,
+          "y": 203.67159763313606
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": ""
+      },
+      {
+        "data": {
+          "id": "fog3:IoTGateway2",
+          "type": "Software",
+          "acao": {
+            "type": "boolean",
+            "value": "false",
+            "metadata": {}
+          },
+          "categoria": {
+            "type": "Text",
+            "value": "software",
+            "metadata": {}
+          },
+          "command": {
+            "type": "Text",
+            "value": "terraform apply",
+            "metadata": {}
+          },
+          "deployInfo": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependencies": {
+                  "type": "TextUnrestricted",
+                  "value": [
+                    {
+                      "dependsOn": "MQTT",
+                      "address": "fog3:MQTT",
+                      "fieldOfInterest": "ip",
+                      "operational": false
+                    },
+                    {
+                      "dependsOn": "Fiware-Orion",
+                      "address": "fog2:Orion2",
+                      "fieldOfInterest": "ip",
+                      "operational": false
+                    },
+                    {
+                      "dependsOn": "fog3",
+                      "address": "fog3",
+                      "fieldOfInterest": "availability",
+                      "fieldOfInterestValue": "",
+                      "expectedValue": true,
+                      "operational": true
+                    }
+                  ],
+                  "metadata": {}
+                },
+                "dependenciesDetails": {
+                  "type": "Text",
+                  "value": "MongoDB",
+                  "metadata": {}
+                },
+                "action": true,
+                "actionType": "deploy",
+                "status": "deploying",
+                "serviceName": "orion",
+                "pluginName": "dockerRestPlugin",
+                "processtype": "docker",
+                "processname": "orion",
+                "processMetadata": {
+                  "type": "StructuredValue",
+                  "value": [
+                    {
+                      "dockerImage": "fiware/orion-ld",
+                      "healthCheck": "http://localhost:1026/version",
+                      "preInstallCommands": [],
+                      "command": [
+                        {
+                          "type": "TextUnrestricted",
+                          "value": "docker%20run%20-itd%20-e%20MQTT_BROKER%3DMQTTADDRESS%20-e%20ORION_BROKER%3DORIONADDRESS%20dnredson%2Fiotgateway%0A"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "parentInfra": "fog3"
+              }
+            ],
+            "metadata": {}
+          },
+          "deployType": {
+            "type": "Text",
+            "value": "standalone",
+            "metadata": {}
+          },
+          "description": {
+            "type": "Text",
+            "value": "IoTGateway",
+            "metadata": {}
+          },
+          "endpoint": {
+            "type": "Text",
+            "value": "http://177.104.61.28:1026/v2",
+            "metadata": {}
+          },
+          "local": {
+            "type": "Text",
+            "value": "localhost",
+            "metadata": {}
+          },
+          "serviceName": {
+            "type": "Text",
+            "value": "IoTGateway",
+            "metadata": {}
+          },
+          "label": "fog3:IoTGateway2",
+          "parentInfra": "fog3"
+        },
+        "position": {
+          "x": 329.1390532544378,
+          "y": 208.09171597633133
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": false,
+        "classes": ""
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "type": "deploy",
+          "source": "fog2",
+          "target": "fog2:MongoDB",
+          "color": "green",
+          "id": "3919931f-4df0-4c46-9747-2917321c48d6"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "deploy",
+          "source": "fog2",
+          "target": "fog2:Orion2",
+          "color": "green",
+          "id": "db568246-a5fa-4ee6-8cae-1c21b3c322e2"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "dependency",
+          "source": "fog2:Orion2",
+          "target": "fog2:MongoDB",
+          "color": "grey",
+          "id": "d2a0681e-16ac-462a-b994-303f5f1d9189"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "dependency",
+          "source": "fog2:Orion2",
+          "target": "fog2:MongoDB",
+          "color": "grey",
+          "id": "b74386d9-4ee4-4002-8721-143e69d1cd07"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "deploy",
+          "source": "fog3",
+          "target": "fog3:MQTT",
+          "color": "green",
+          "id": "34df066c-0b63-4054-8f6a-7c38c615bdf6"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "deploy",
+          "source": "fog3",
+          "target": "fog3:IoTGateway2",
+          "color": "green",
+          "id": "28e317db-0705-4484-9adf-50172ff1fb5e"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "dependency",
+          "source": "fog3:IoTGateway2",
+          "target": "fog3:MQTT",
+          "color": "grey",
+          "id": "f97216a3-40b4-4682-b6d9-4c09092793a6"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "type": "dependency",
+          "source": "fog3:IoTGateway2",
+          "target": "fog2:Orion2",
+          "color": "grey",
+          "id": "5412394c-1a54-49c1-95f6-d65ce09f1760"
+        },
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbable": true,
+        "pannable": true,
+        "classes": ""
+      }
+    ]
+  },
+  "style": [
+    {
+      "selector": "node",
+      "style": {
+        "shape": "rectangle",
+        "label": "data(label)"
+      }
+    },
+    {
+      "selector": "edge",
+      "style": {
+        "width": "1px"
+      }
+    },
+    {
+      "selector": "node:selected",
+      "style": {
+        "border-color": "rgb(255,0,0)"
+      }
+    },
+    {
+      "selector": "edge[type = \"deploy\"]",
+      "style": {
+        "line-color": "rgb(0,128,0)",
+        "target-arrow-color": "rgb(0,128,0)",
+        "target-arrow-shape": "triangle"
+      }
+    },
+    {
+      "selector": "edge[type = \"dependencia\"]",
+      "style": {
+        "line-color": "rgb(0,0,255)",
+        "target-arrow-color": "rgb(0,0,255)",
+        "target-arrow-shape": "triangle"
+      }
+    },
+    {
+      "selector": "node",
+      "style": {
+        "shape": "rectangle",
+        "label": "data(label)"
+      }
+    }
+  ],
+  "data": {},
+  "zoomingEnabled": true,
+  "userZoomingEnabled": true,
+  "zoom": 1.357429718875502,
+  "minZoom": 0.3,
+  "maxZoom": 5,
+  "panningEnabled": true,
+  "userPanningEnabled": true,
+  "pan": {
+    "x": -184.32730923694797,
+    "y": -74.91164658634537
+  },
+  "boxSelectionEnabled": true,
+  "renderer": {
+    "name": "canvas"
+  }
+}

@@ -1,0 +1,109 @@
+{
+    "id": "IoTGateway2",
+    "type": "Service",
+    "acao": {
+      "type": "boolean",
+      "value": "false",
+      "metadata": {}
+    },
+    "categoria": {
+      "type": "Text",
+      "value": "software",
+      "metadata": {}
+    },
+    "command": {
+      "type": "Text",
+      "value": "terraform apply",
+      "metadata": {}
+    },
+    "deployInfo": {
+      "type": "TextUnrestricted",
+      "value": [
+        {
+          "dependencies": {
+            "type": "TextUnrestricted",
+            "value": [
+           
+              {
+                "dependsOn": "MQTT2",
+                "address": "address",
+                "fieldOfInterest": "ip_address",
+                "fieldOfInterestValue": "",
+                "expectedValue": " ",
+                "operational": false
+              },
+              {
+                "dependsOn": "Fiware-Orion",
+                "address": "address",
+                "fieldOfInterest": "ip_address",
+                "fieldOfInterestValue": "",
+                "expectedValue": " ",
+                "operational": false
+              }
+           
+            ],
+            "metadata": {}
+          },
+          "dependenciesDetails": {
+            "type": "Text",
+            "value": "MongoDB",
+            "metadata": {}
+          },
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "serviceName": "orion",
+          "pluginName": "dockerRestPlugin",
+          "processtype": "docker",
+          "processname": "orion",
+          "service": "openiot",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "parentInfra": "",
+          "entityId": " ",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "fiware/orion-ld",
+                "healthCheck": "http://localhost:1026/version",
+                "preInstallCommands": [],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-itd%20-e%20MQTT_BROKER%3DMQTT2%20-e%20ORION_BROKER%3Fiware-Orion%20dnredson%2Fiotgateway%0A"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {}
+    },
+    "deployType": {
+      "type": "Text",
+      "value": "standalone",
+      "metadata": {}
+    },
+    "description": {
+      "type": "Text",
+      "value": "IoTGateway",
+      "metadata": {}
+    },
+    "endpoint": {
+      "type": "Text",
+      "value": "http://192.168.10.105:1026/v2",
+      "metadata": {}
+    },
+    "local": {
+      "type": "Text",
+      "value": "localhost",
+      "metadata": {}
+    },
+    "serviceName": {
+      "type": "Text",
+      "value": "IoTGateway",
+      "metadata": {}
+    }
+  }
