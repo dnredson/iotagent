@@ -1,7 +1,7 @@
 
 {
-    "config_entity": "fog2Config",
-    "address": "http://192.168.10.105:1026/v2/entities",
+    "config_entity": "fogConfig",
+    "address": "http://177.104.61.56:1026/v2/entities",
     "fiware-service": "openiot",
     "fiware-servicepath": "/"
   }

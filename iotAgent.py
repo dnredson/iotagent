@@ -53,7 +53,7 @@ def get_entity(config):
 #  consultar a entidade no Fiware-Orion
 def consultar_fiware_orion(service_id):
     
-    url = f"http://192.168.10.105:1026/v2/entities/{service_id}"
+    url = f"http://177.104.61.56:1026/v2/entities/{service_id}"
     headers = {
         'Fiware-service': 'openiot',
         'Fiware-servicepath': '/',
@@ -70,7 +70,7 @@ def consultar_fiware_orion(service_id):
 
 
 def publicar_fiware_orion(entity):
-    url = f"http://192.168.10.105:1026/v2/entities?options=upsert"
+    url = f"http://177.104.61.56:1026/v2/entities?options=upsert"
     headers = {
         'Content-Type': 'application/json',
         'Fiware-service': 'openiot',
