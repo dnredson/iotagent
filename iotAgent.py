@@ -271,13 +271,12 @@ def main():
                                                         try:
                                                             if(field != "availability"):
                                                                 startDecode = startDecode.replace(nome,valor)
-                                                                print("Start decode com o novo método")
-                                                                print(startDecode)
+                                                                
                                                         except ValueError:
                                                              print("Error decoding")
                                                        
                                                     resultado  = subprocess.run(startDecode, shell=True,capture_output=True)
-                                                    
+                                                    print(startDecode)
                                                     if resultado.returncode == 0:
                                                         print("Executado com sucesso! Iniciando monitor!")
                                                         print("Saída padrão:", resultado.stdout.decode())

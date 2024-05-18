@@ -1,0 +1,333 @@
+{
+    "id": "cloudConfig",
+    "type": "Config",
+    "action": {
+      "type": "Boolean",
+      "value": true,
+      "metadata": {}
+    },
+    "actionMetadata": {
+      "type": "StructuredValue",
+      "value": [
+        {
+          "serviceName": "system",
+          "serviceAddress": "localhost",
+          "servicePort": 1883,
+          "brokerAddress": "http://177.104.61.56:1026/v2/entities",
+          "service": "openiot",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "systemPluginAWS",
+          "entityId": "cloud",
+          "processtype": "system",
+          "processname": "system",
+          "serviceAvaiability": "",
+          "startscript": "docker start mqtt",
+          "stopscript": "docker stop mqtt",
+          "action": true,
+          "actionType": "monitoring",
+          "status": "deploying",
+          "lastlog": "",
+          "timestamp": 233232234222,
+          "processMetadata": {}
+        },
+        {
+          "serviceName": "mongodb",
+          "serviceAddress": "localhost",
+          "brokerAddress": "http://177.104.61.56:1026/v2/entities",
+          "servicePort": 27017,
+          "service": "openiot",
+          "entityId": "cloud:MongoDB",
+          "parentInfra": "cloud",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "dockerMongoPlugin",
+          "processtype": "docker",
+          "processname": "mongodb",
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "mongo:4.4",
+                "preInstallCommands": [],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-itd%20--name%20%20mongodb%20%20-p%2027017%3A27017%20-d%20mongo%3A4.4"
+                  }
+                ]
+              }
+            ]
+          },
+          "dependencies": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependsOn": "cloud",
+                "address": "cloud",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": true
+              }
+            ],
+            "metadata": {}
+          }
+        },
+        {
+          "dependencies": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependsOn": "MongoDB",
+                "address": "cloud:MongoDB",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": false
+              },
+              {
+                "dependsOn": "MongoDB",
+                "address": "cloud:MongoDB",
+                "fieldOfInterest": "ip_address",
+                "fieldOfInterestValue": "107.20.3.207",
+                "expectedValue": " ",
+                "operational": false
+              },
+              {
+                "dependsOn": "cloud",
+                "address": "cloud",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": true
+              }
+            ],
+            "metadata": {}
+          },
+          "dependenciesDetails": {
+            "type": "Text",
+            "value": "MongoDB",
+            "metadata": {}
+          },
+          "parentInfra": "cloud",
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "serviceName": "orion",
+          "serviceAddress": "localhost",
+          "servicePort": 1026,
+          "brokerAddress": "http://177.104.61.56:1026/v2/entities",
+          "service": "openiot",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "dockerRestPlugin",
+          "processtype": "docker",
+          "processname": "orion",
+          "entityId": "cloud:Orion",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "fiware/orion-ld",
+                "healthCheck": "http://localhost:1026/version",
+                "preInstallCommands": [],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-itd%20--name%20serviceName%20-p%201026%3AservicePort%20dockerImage%20-dbhost%20MongoDB%20%20-corsOrigin%20__ALL"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "dependencies": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependsOn": "cloud",
+                "address": "cloud",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": true
+              }
+            ],
+            "metadata": {}
+          },
+          "dependenciesDetails": {
+            "type": "Text",
+            "value": "MongoDB",
+            "metadata": {}
+          },
+          "parentInfra": "cloud",
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "serviceName": "CrateDB",
+          "serviceAddress": "localhost",
+          "servicePort": 4200,
+          "brokerAddress": "http://177.104.61.56:1026/v2/entities",
+          "service": "openiot",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "dockerCratePlugin",
+          "processtype": "docker",
+          "processname": "CrateDB",
+          "entityId": "cloud:CrateDB",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "crate",
+                "healthCheck": "http://localhost:4200/_cluster/health",
+                "preInstallCommands": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "echo%20%22vm.max_map_count%3D262144%22%20%7C%20sudo%20tee%20-a%20%2Fetc%2Fsysctl.conf%0A"
+                  },
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "sudo%20sysctl%20-p"
+                  }
+                ],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-d%20%20--name%20serviceName%20-p%204200%3AservicePort%20-p%204300%3A4300%20-v%20crate_data%3A%2Fdata%20dockerImage%3Alatest%20%20-Cnetwork.host%3D_eth0_%20%20-Ccluster.name%3Ddemocluster%20%20-Chttp.cors.enabled%3Dtrue%20%20-Chttp.cors.allow-origin%3D%22%2A%22"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "dependencies": {
+            "type": "TextUnrestricted",
+            "value": [
+              {
+                "dependsOn": "CrateDB",
+                "address": "cloud:CrateDB",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": false
+              },
+              {
+                "dependsOn": "CrateDB",
+                "address": "cloud:CrateDB",
+                "fieldOfInterest": "ip_address",
+                "fieldOfInterestValue": "107.20.3.207",
+                "expectedValue": " ",
+                "operational": false
+              },
+              {
+                "dependsOn": "cloud",
+                "address": "cloud",
+                "fieldOfInterest": "availability",
+                "fieldOfInterestValue": "",
+                "expectedValue": true,
+                "operational": true
+              }
+            ],
+            "metadata": {}
+          },
+          "dependenciesDetails": {
+            "type": "Text",
+            "value": "MongoDB",
+            "metadata": {}
+          },
+          "parentInfra": "cloud",
+          "action": true,
+          "actionType": "deploy",
+          "status": "deploying",
+          "serviceName": "QuantumLeap",
+          "serviceAddress": "localhost",
+          "servicePort": 8668,
+          "brokerAddress": "http://177.104.61.56:1026/v2/entities",
+          "service": "openiot",
+          "servicepath": "/",
+          "sampleInterval": "30",
+          "pluginName": "dockerRestPlugin",
+          "processtype": "docker",
+          "processname": "QuantumLeap",
+          "entityId": "cloud:QuantumLeap",
+          "processMetadata": {
+            "type": "StructuredValue",
+            "value": [
+              {
+                "dockerImage": "smartsdk/quantumleap",
+                "healthCheck": "http://localhost:8668/health",
+                "preInstallCommands": [],
+                "command": [
+                  {
+                    "type": "TextUnrestricted",
+                    "value": "docker%20run%20-d%20%20--name%20serviceName%20-p%208668%3A8668%20-e%20CRATE_HOST%3DCrateDB%20smartsdk%2Fquantumleap%3Alatest"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {}
+    },
+    "actionType": {
+      "type": "Text",
+      "value": "deploy",
+      "metadata": {}
+    },
+    "action_interval": {
+      "type": "Number",
+      "value": 30,
+      "metadata": {}
+    },
+    "categoria": {
+      "type": "StructuredValue",
+      "value": {
+        "type": "Text",
+        "value": "infrastructure",
+        "metadata": {}
+      },
+      "metadata": {}
+    },
+    "description": {
+      "type": "StructuredValue",
+      "value": {
+        "type": "Text",
+        "value": "Fog UBUNTU",
+        "metadata": {}
+      },
+      "metadata": {}
+    },
+    "endpoint": {
+      "type": "StructuredValue",
+      "value": {
+        "type": "Text",
+        "value": "http://localhost:6000/iotagent"
+      },
+      "metadata": {}
+    },
+    "local": {
+      "type": "StructuredValue",
+      "value": {
+        "type": "Text",
+        "value": "localhost"
+      },
+      "metadata": {}
+    },
+    "serviceName": {
+      "type": "StructuredValue",
+      "value": {
+        "type": "Text",
+        "value": "Fog 1 - Medium Ubuntu",
+        "metadata": {}
+      },
+      "metadata": {}
+    }
+  }
