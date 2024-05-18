@@ -184,7 +184,7 @@ def main():
                 
                 if(entity_data["actionType"]["value"]=="deploy"):
                 
-                    action_interval = 30
+                   # action_interval = 30
                     for i in entity_data["actionMetadata"]["value"]:
                 
                         
