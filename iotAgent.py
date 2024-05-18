@@ -340,6 +340,24 @@ def main():
                                             
                                             active_plugins.add(service_name)
                                             subprocess.Popen(['python3', 'plugins/dockerRestPlugin.py', service_name, service_address, str(service_port), service_path, service, broker_address, entity_id, str(sample_interval),healthcheck,parent_infra])
+                            elif  plugin_info == "dockerCratePlugin":
+                                        print("Iniciando plugin Crate Rest Plugin")
+                                        service_name = i['serviceName']
+                                        parent_infra = i['parentInfra']
+                                        service_address = i['serviceAddress']
+                                        service_port = i['servicePort']  # Porta padrão MQTT
+                                        service_path = i['servicepath']
+                                        service = i['serviceName']
+                                        broker_address = i['brokerAddress']
+                                        entity_id = i['entityId']
+                                        sample_interval = i['sampleInterval']
+                                        healthcheck=""
+                                        for meta in i["processMetadata"]["value"]:
+                                            healthcheck = meta["healthCheck"]
+                                        if service_name not in active_plugins:
+                                            
+                                            active_plugins.add(service_name)
+                                            subprocess.Popen(['python3', 'plugins/dockerCratePlugin.py', service_name, service_address, str(service_port), service_path, service, broker_address, entity_id, str(sample_interval),healthcheck,parent_infra])
                             elif  plugin_info == "systemPlugin":
                                         print("Iniciando plugin System Plugin")
                                         service_name = i['serviceName']
