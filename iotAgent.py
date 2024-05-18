@@ -10,7 +10,7 @@ def load_config(filename):
         config = json.load(file)
     return config
 
-def get_entity(config):
+""" def get_entity(config):
     address = config.get('address', '')
     headers = {
         'Fiware-service': 'openiot',
@@ -27,7 +27,26 @@ def get_entity(config):
     else:
         print("Erro ao obter a entidade do Orion:", response.text)
         return None
-    
+     """
+def get_entity(config):
+    address = config.get('address', '')
+    headers = {
+        'Fiware-service': 'openiot',
+        'Fiware-servicepath': '/',
+    }
+    while True:
+        response = requests.get(f"{address}/{config['config_entity']}", headers=headers)
+        if response.status_code == 200:
+            entity_data = response.json()
+            if isinstance(entity_data, list):
+                # Se a resposta for uma lista, pegamos o primeiro elemento
+                entity_data = entity_data[0]
+            print("Entidade do Orion obtida:", entity_data.get('id'))
+            return entity_data
+        else:
+            print("Erro ao obter a entidade do Orion:", response.text)
+            print("Tentando novamente em 10 segundos...")
+            time.sleep(10)
 #Função para modificar status, ação e tipo de ação dentro de actionMetadata    
 
 # Função parakp
