@@ -284,8 +284,39 @@ def main():
                                                     else:
                                                         print("Erro ao iniciar monitor!")
                                                         print("Saída de erro:", resultado.stderr.decode())
+                                               
+                                            for z in i["processMetadata"]["value"][0]["posInstallCommands"]:
+                                            
+                                                    startDecode = urllib.parse.unquote(y["value"])
+                                                    
+                                                    startDecode = startDecode.replace("serviceName",containerName)
+                                                    startDecode = startDecode.replace("servicePort",str(servicePort))
+                                                    startDecode = startDecode.replace("dockerImage",dockerImage)
+                                                   
+                                                    for dependencia in i["dependencies"]["value"]:
+
+                                                        nome = dependencia["dependsOn"]
+                                                        valor = dependencia["fieldOfInterestValue"]
+                                                        field = dependencia["fieldOfInterest"]
                                                         
-                         
+                                                        
+                                                        try:
+                                                            if(field != "availability"):
+                                                                startDecode = startDecode.replace(nome,valor)
+                                                                
+                                                        except ValueError:
+                                                             print("Error decoding")
+                                                       
+                                                    
+                                                    print(startDecode)
+                                                    if resultado.returncode == 0:
+                                                        print("Executado com sucesso! Iniciando monitor!")
+                                                        print("Saída padrão:", resultado.stdout.decode())
+                                                        atualizar_campo(entity_data, i["serviceName"], "actionType", "monitoring")
+                                                    else:
+                                                        print("Erro ao iniciar monitor!")
+                                                        print("Saída de erro:", resultado.stderr.decode())            
+
                         if(i["actionType"]=="monitoring"):
                             plugin_info = i["pluginName"]    
                             print("Entidade "+i["serviceName"]+" está em monitoring, comecemos! Iniciando plugin"+ plugin_info )                 
