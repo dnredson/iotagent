@@ -287,7 +287,7 @@ def main():
                                                
                                             for z in i["processMetadata"]["value"][0]["posInstallCommands"]:
                                             
-                                                    startDecode = urllib.parse.unquote(y["value"])
+                                                    startDecode = urllib.parse.unquote(z["value"])
                                                     
                                                     startDecode = startDecode.replace("serviceName",containerName)
                                                     startDecode = startDecode.replace("servicePort",str(servicePort))
